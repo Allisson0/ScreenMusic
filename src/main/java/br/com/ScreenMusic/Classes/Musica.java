@@ -45,4 +45,9 @@ public class Musica {
     public void setArtistaAutoral(Artista artistaAutoral) {
         this.artistaAutoral = artistaAutoral;
     }
+
+    @Override
+    public String toString(){
+        return "Música: " + this.getNome() + " | autor: " + this.getArtistaAutoral().getNome();
+    }
 }

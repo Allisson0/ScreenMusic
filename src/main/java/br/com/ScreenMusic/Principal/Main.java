@@ -93,7 +93,7 @@ public class Main {
         var autor = input.nextLine();
 
         //Procura o autor no banco de dados
-        Optional<Artista> artistaSelecionado = repositorio.findByNomeContainingIgnoreCase(autor);
+        Optional<Artista> artistaSelecionado = repositorio.findFirstByNomeContainingIgnoreCase(autor);
 
         //Se encontrar o autor, cria uma musíca e relaciona o autor nela
         if (artistaSelecionado.isPresent()) {
@@ -121,6 +121,8 @@ public class Main {
 
     //==== LISTA AS MÚSICAS DISPONÍVEIS ====
     private void listarMusicas(){
-
+        //lista as músicas disponíveis
+        List<Musica> musicas = repositorio.listarMusicas();
+        musicas.forEach(System.out::println);
     }
 }
