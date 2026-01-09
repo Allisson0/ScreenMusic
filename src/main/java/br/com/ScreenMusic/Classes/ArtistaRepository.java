@@ -14,4 +14,7 @@ public interface ArtistaRepository extends JpaRepository<Artista, Long> {
     //Seleciona uma série de músicas do banco de dados
     @Query("SELECT m FROM Artista a JOIN a.musicasAutorais m ORDER BY a.id")
     List<Musica> listarMusicas();
+
+    @Query("SELECT m FROM Artista a JOIN a.musicasAutorais m WHERE a = :artista ORDER BY m.nome")
+    List<Musica> procurarMusicasPorArtista(Artista artista);
 }

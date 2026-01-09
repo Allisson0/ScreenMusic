@@ -4,8 +4,10 @@ import br.com.ScreenMusic.Classes.Artista;
 import br.com.ScreenMusic.Classes.ArtistaRepository;
 import br.com.ScreenMusic.Classes.Musica;
 import br.com.ScreenMusic.Classes.Tipo;
+import org.springframework.scheduling.support.ScheduledTaskObservationContext;
 
 import java.lang.classfile.Opcode;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -16,6 +18,7 @@ public class Main {
     private final ArtistaRepository repositorio;
 
     private String menu = """
+            
             ======= Screen Music Application =======
             
             1 - Cadastrar artistas
@@ -34,6 +37,7 @@ public class Main {
     //==== MENU PRINCIPAL ====
     public void menu(){
         int choose = 0;
+
         while(choose!=9) {
             System.out.println(menu);
             System.out.println("Escolha uma das opções acima: ");
@@ -41,29 +45,34 @@ public class Main {
             try{
                 choose = input.nextInt();
                 input.nextLine();
-            } catch (NumberFormatException e){
-                System.out.println("Por favor, insira um número válido.");
-            }
 
-            switch (choose){
-                case 1:
-                    cadastrarArtista();
-                    break;
-                case 2:
-                    cadastrarMusica();
-                    break;
-                case 3:
-                    listarMusicas();
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 9:
-                    System.out.println("Saindo do programa...");
-                    break;
-                default:
-                    System.out.println("Por favor, insira uma opção válida.");
+                switch (choose){
+                    case 1:
+                        cadastrarArtista();
+                        break;
+                    case 2:
+                        cadastrarMusica();
+                        break;
+                    case 3:
+                        listarMusicas();
+                        break;
+                    case 4:
+                        procurarMusicasPorArtista();
+                        break;
+                    case 5:
+                        break;
+                    case 9:
+                        System.out.println("Saindo do programa...");
+                        break;
+                    default:
+                        System.out.println("Por favor, insira uma opção válida.");
+                }
+
+            } catch (InputMismatchException e){
+                System.out.println("Por favor, insira um número válido.");
+                input.nextLine();
+            } catch (IllegalArgumentException e){
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -82,13 +91,26 @@ public class Main {
         //Salva o artista no banco de dados
         repositorio.save(artista);
         System.out.println("Artista salvo com sucesso.\n" + artista);
+
+        //Realiza uma verificação para ver se o utilizador
+        //não quer cadastrar outro artista
+        System.out.println("Deseja cadastrar um outro artista? S/N");
+        var choose = input.nextLine();
+
+        //Se sim, cadastra outro artista
+        if (choose.equalsIgnoreCase("S")) {
+            cadastrarArtista();
+        }
     }
 
     //==== CADASTRAR NOVA MÚSICA ====
     private void cadastrarMusica(){
         System.out.println("Qual o nome da música? ");
         var nomeMusica = input.nextLine();
+
+        //Mostra os artistas disponíveis no banco de dados
         mostrarArtistas();
+
         System.out.println("A qual autor pertence essa música? ");
         var autor = input.nextLine();
 
@@ -97,8 +119,11 @@ public class Main {
 
         //Se encontrar o autor, cria uma musíca e relaciona o autor nela
         if (artistaSelecionado.isPresent()) {
+
+            //Recupera o artista do Optional
             var artista = artistaSelecionado.get();
 
+            //Cria uma música com os dados
             Musica musica = new Musica(nomeMusica, artista);
             //Para o autor, adiciona uma nova música nas suas músicas
             artistaSelecionado.get().addMusicasAutorais(musica);
@@ -124,5 +149,38 @@ public class Main {
         //lista as músicas disponíveis
         List<Musica> musicas = repositorio.listarMusicas();
         musicas.forEach(System.out::println);
+    }
+
+    //==== PROCURA MÚSICAS POR ARTISTA ====
+    private void procurarMusicasPorArtista(){
+        //Mostra os artista disponíveis no banco de dados
+        mostrarArtistas();
+        System.out.println("Escolha o artista para visualizar suas músicas: ");
+        var choose = input.nextLine();
+
+        //Procura o artista e salva a primeira instância encontrada
+        Optional<Artista> artista = repositorio.findFirstByNomeContainingIgnoreCase(choose);
+
+        //Se encontrar um artista, faça:
+        if (artista.isPresent()) {
+
+            //Transforma em classe artista e imprime o artista que foi escolhido
+            Artista artistaEncontrado = artista.get();
+            System.out.println("Artista escolhido: " + artistaEncontrado.getNome());
+
+            //Procura as músicas dessa artista e imprime
+            List<Musica> musicasDoArtista = repositorio.procurarMusicasPorArtista(artistaEncontrado);
+            //Se nenhuma música for encontrada, imprime a mensagem:
+            if (musicasDoArtista.isEmpty()){
+                System.out.println("Nenhuma música encontrada.");
+            } else {
+                //Se houver músicas, imprime as músicas.
+                System.out.println("Músicas encontradas do artista: ");
+                musicasDoArtista.forEach(System.out::println);
+            }
+        } else{
+            //Se não encontrar o artista:
+            System.out.println("Artista não encontrado.");
+        }
     }
 }
