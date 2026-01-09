@@ -1,4 +1,4 @@
-<h1 class="topo">:musical_note: Screen Music 🎵</h1>
+<h1 id="topo">:musical_note: Screen Music 🎵</h1>
 <p>O ScreenMusic é fruto de um desafio da Alura do curso 'Java: persistência de dados e consultas com Spring Data JPA', dedicado ao final do curso para consolidação dos conhecimentos adquiridos.
 O mesmo é uma forma de guardar referências de artistas dentro de músicas, como forma de chave estrangeira, para assim, relacionar os mesmo. Utiliza-se de enums, JPA, Spring boot, PostgreSQL, e outras
 atribuições e métodos aprendidos dentro do curso.<br>
@@ -12,7 +12,7 @@ de Dados Postgre, utilizando-se do Maven para organização dessas dependências
   <li><a href="#doc">Organização de documentação</a></li>
 </ol>
 
-<h1 class="dependecia">Variáveis de ambiente :pushpin:</h1>
+<h1 id="dependecia">Variáveis de ambiente :pushpin:</h1>
 <p>O projeto necessita que o usuário tenha o <strong>PostgreSQL</strong> baixado na máquina e defina algumas variáveis de ambiente para o JPA realizar a comunicação com o banco de dados.</p>
 <ul>
   <li>${DB_HOST} - host que será utilizado para acesso do banco de dados (localhost).</li>
@@ -30,7 +30,7 @@ variável de ambiente. Ou seja, acesso via pgAdmin do postgree e criar o banco d
 <img width="242" height="97" alt="image" src="https://github.com/user-attachments/assets/a28aa736-0511-4e81-8055-639f2d133dbb" />
 
 
-<h1 class="projeto">Projeto 🛠️</h1>
+<h1 id="projeto">Projeto 🛠️</h1>
 <p>Algumas fotos do projeto em funcionamento: </p>
 <h3>Cadastro de artista</h3>
 <img width="440" height="452" alt="image" src="https://github.com/user-attachments/assets/c8a74e82-948c-4595-b478-dd44bd325870" />
@@ -42,7 +42,7 @@ variável de ambiente. Ou seja, acesso via pgAdmin do postgree e criar o banco d
 <img width="417" height="300" alt="image" src="https://github.com/user-attachments/assets/4b3de2e3-eac5-4fe3-bf87-435ebd3474a8" />
 
 
-<h1 class="doc">Organização e Documentação: :bookmark_tabs:</h1>
+<h1 id="doc">Organização e Documentação: :bookmark_tabs:</h1>
 <p>A organização foi feita por meio da seguinte organização de pastas dentro do projeto:</p>
 <ul>
   <li>Classes</li>
