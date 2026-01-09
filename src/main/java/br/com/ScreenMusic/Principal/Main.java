@@ -4,7 +4,6 @@ import br.com.ScreenMusic.Classes.Artista;
 import br.com.ScreenMusic.Classes.ArtistaRepository;
 import br.com.ScreenMusic.Classes.Musica;
 import br.com.ScreenMusic.Classes.Tipo;
-import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.InputMismatchException;
@@ -25,7 +24,6 @@ public class Main {
             2 - Cadastrar músicas
             3 - Listar músicas
             4 - Buscar músicas por artista
-            5 - Pesquisar dados sobre um artista
             
             9 - Sair
             """;
@@ -58,9 +56,6 @@ public class Main {
                         break;
                     case 4:
                         procurarMusicasPorArtista();
-                        break;
-                    case 5:
-                        pesquisaGPT();
                         break;
                     case 9:
                         System.out.println("Saindo do programa...");
@@ -189,9 +184,5 @@ public class Main {
             //Se não encontrar o artista:
             System.out.println("Artista não encontrado.");
         }
-    }
-
-    private void pesquisaGPT(){
-        
     }
 }
