@@ -1,4 +1,4 @@
-package br.com.ScreenMusic.ScreenMusic;
+package br.com.ScreenMusic;
 
 import br.com.ScreenMusic.Classes.ArtistaRepository;
 import br.com.ScreenMusic.Principal.Main;
@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ScreenMusicApplication implements CommandLineRunner {
 
     @Autowired
-    ArtistaRepository repository;
+    private ArtistaRepository repository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScreenMusicApplication.class, args);

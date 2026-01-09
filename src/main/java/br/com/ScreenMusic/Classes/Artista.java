@@ -22,6 +22,8 @@ public class Artista {
     @OneToMany(mappedBy = "artistaAutoral", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Musica> musicasAutorais;
 
+    public Artista(){}
+
     public Artista(String nome, Tipo tipo){
         this.nome = nome;
         this.tipo = tipo;
@@ -31,8 +33,8 @@ public class Artista {
         return musicasAutorais;
     }
 
-    public void setMusicasAutorais(List<Musica> musicasAutorais) {
-        this.musicasAutorais = musicasAutorais;
+    public void addMusicasAutorais(Musica musicaAutoral) {
+        this.musicasAutorais.add(musicaAutoral);
     }
 
     public Tipo getTipo() {

@@ -2,8 +2,12 @@ package br.com.ScreenMusic.Principal;
 
 import br.com.ScreenMusic.Classes.Artista;
 import br.com.ScreenMusic.Classes.ArtistaRepository;
+import br.com.ScreenMusic.Classes.Musica;
 import br.com.ScreenMusic.Classes.Tipo;
 
+import java.lang.classfile.Opcode;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -36,6 +40,7 @@ public class Main {
 
             try{
                 choose = input.nextInt();
+                input.nextLine();
             } catch (NumberFormatException e){
                 System.out.println("Por favor, insira um número válido.");
             }
@@ -45,8 +50,10 @@ public class Main {
                     cadastrarArtista();
                     break;
                 case 2:
+                    cadastrarMusica();
                     break;
                 case 3:
+                    listarMusicas();
                     break;
                 case 4:
                     break;
@@ -81,10 +88,39 @@ public class Main {
     private void cadastrarMusica(){
         System.out.println("Qual o nome da música? ");
         var nomeMusica = input.nextLine();
+        mostrarArtistas();
+        System.out.println("A qual autor pertence essa música? ");
+        var autor = input.nextLine();
+
+        //Procura o autor no banco de dados
+        Optional<Artista> artistaSelecionado = repositorio.findByNomeContainingIgnoreCase(autor);
+
+        //Se encontrar o autor, cria uma musíca e relaciona o autor nela
+        if (artistaSelecionado.isPresent()) {
+            var artista = artistaSelecionado.get();
+
+            Musica musica = new Musica(nomeMusica, artista);
+            //Para o autor, adiciona uma nova música nas suas músicas
+            artistaSelecionado.get().addMusicasAutorais(musica);
+
+            //Salva o artista com a nova música
+            repositorio.save(artista);
+            System.out.printf("Música %s adicionada com sucesso!\n", musica.getNome());
+        } else {
+            //Caso não encontrado, retorna essa mensagem
+            System.out.println("Artista não encontrado.");
+        }
     }
 
     //==== MOSTRA LISTA DE ARTISTAS ====
     private void mostrarArtistas(){
+        //Retorna a lista de autores do banco de dados
+        List<Artista> artistas = repositorio.findAll();
+        artistas.forEach(System.out::println);
+    }
+
+    //==== LISTA AS MÚSICAS DISPONÍVEIS ====
+    private void listarMusicas(){
 
     }
 }
