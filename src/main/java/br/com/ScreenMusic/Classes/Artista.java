@@ -11,10 +11,9 @@ public class Artista {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome")
+    @Column(unique = true)
     private String nome;
 
-    @Column(name = "tipo")
     @Enumerated(EnumType.STRING)
     private Tipo tipo;
 

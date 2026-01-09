@@ -4,9 +4,9 @@ import br.com.ScreenMusic.Classes.Artista;
 import br.com.ScreenMusic.Classes.ArtistaRepository;
 import br.com.ScreenMusic.Classes.Musica;
 import br.com.ScreenMusic.Classes.Tipo;
-import org.springframework.scheduling.support.ScheduledTaskObservationContext;
+import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
+import org.springframework.dao.DataIntegrityViolationException;
 
-import java.lang.classfile.Opcode;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +60,7 @@ public class Main {
                         procurarMusicasPorArtista();
                         break;
                     case 5:
+                        pesquisaGPT();
                         break;
                     case 9:
                         System.out.println("Saindo do programa...");
@@ -88,9 +89,15 @@ public class Main {
         Tipo tipo = Tipo.fromString(tipoEscolha.toLowerCase());
         Artista artista = new Artista(nome, tipo);
 
-        //Salva o artista no banco de dados
-        repositorio.save(artista);
-        System.out.println("Artista salvo com sucesso.\n" + artista);
+        try{
+            //Salva o artista no banco de dados
+            repositorio.save(artista);
+            System.out.println("Artista salvo com sucesso.\n" + artista);
+
+        //Se já ouver um artista com mesmo nome, apresenta essa mensagem:
+        } catch (DataIntegrityViolationException e){
+            System.out.println("Artista já existente no banco de dados.");
+        }
 
         //Realiza uma verificação para ver se o utilizador
         //não quer cadastrar outro artista
@@ -182,5 +189,9 @@ public class Main {
             //Se não encontrar o artista:
             System.out.println("Artista não encontrado.");
         }
+    }
+
+    private void pesquisaGPT(){
+        
     }
 }
